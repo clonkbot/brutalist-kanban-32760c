@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brutalist Kanban Styles */
+
+:root {
+  --color-concrete: #e8e4df;
+  --color-paper: #f5f2ed;
+  --color-ink: #1a1a1a;
+  --color-accent: #ff6b35;
+  --color-success: #4ade80;
+  --color-warning: #fff9c4;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--color-concrete);
+}
+
+/* Noise overlay for concrete texture */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom border width */
+.border-3 {
+  border-width: 3px;
+}
+
+/* Column animation */
+.column-container {
+  animation: column-rise 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes column-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Task card animation */
+.task-card {
+  animation: task-slide 0.4s ease-out forwards;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+@keyframes task-slide {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade in animation */
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Drag ghost styling */
+.task-card[draggable="true"]:active {
+  opacity: 0.7;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-concrete);
+  border: 2px solid var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  border: 2px solid var(--color-concrete);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Focus states - brutalist style */
+input:focus,
+button:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+
+/* Mobile touch improvements */
+@media (max-width: 768px) {
+  .task-card {
+    touch-action: none;
+  }
+
+  /* Larger touch targets */
+  button {
+    min-height: 44px;
+  }
+
+  /* Disable hover effects on touch */
+  .task-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Print styles - because why not */
+@media print {
+  .noise-overlay {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-accent: #ff4500;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .column-container,
+  .task-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
